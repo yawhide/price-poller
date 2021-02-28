@@ -6,12 +6,12 @@ const ethGas = require("../lib/ethGasPrice");
 router.get("/prices", function (req, res, next) {
   const body = {
     coingeckoPrice: {
-      lastUpdatedAt: coingecko.lastUpdatedAt,
-      prices: coingecko.prices,
+      lastUpdatedAt: coingecko.lastUpdatedAt(),
+      prices: coingecko.prices(),
     },
     ethGasPrice: {
-      fast: ethGas.prices.fast,
-      lastUpdatedAt: ethGas.lastUpdatedAt,
+      fast: ethGas.prices().fast,
+      lastUpdatedAt: ethGas.lastUpdatedAt(),
     },
   };
   res.json(body);
