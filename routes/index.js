@@ -1,17 +1,26 @@
+const cors = require("cors");
 const express = require("express");
 const router = express.Router();
-const coingecko = require("../lib/coingecko");
-const ethGas = require("../lib/ethGasPrice");
+const apiPoller = require("../lib/api-poller");
 
-router.get("/prices", function (req, res, next) {
+router.get("/prices", cors(), function (req, res, next) {
+  const data = apiPoller.getAll();
   const body = {
-    coingeckoPrice: {
-      lastUpdatedAt: coingecko.lastUpdatedAt(),
-      prices: coingecko.prices(),
+    cryptocurrencies: {
+      lastUpdatedAt: data.prices.lastUpdatedAt,
+      prices: data.prices.data,
     },
-    ethGasPrice: {
-      fast: ethGas.prices().fast,
-      lastUpdatedAt: ethGas.lastUpdatedAt(),
+    networkFees: {
+      ETH: {
+        ...data.ethFee.data,
+        // ...ethGas.prices(),
+        lastUpdatedAt: data.ethFee.lastUpdatedAt,
+      },
+      BTC: {
+        ...data.btcFee.data,
+        // ...btc.prices(),
+        lastUpdatedAt: data.btcFee.lastUpdatedAt,
+      },
     },
   };
   res.json(body);

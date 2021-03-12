@@ -16,6 +16,13 @@ var port = normalizePort(process.env.PORT || "3003");
 app.set("port", port);
 
 /**
+ * Start up api poller registering
+ */
+require("../lib/coingecko");
+require("../lib/ethGasPrice");
+require("../lib/btcNetworkFee");
+
+/**
  * Create HTTP server.
  */
 
